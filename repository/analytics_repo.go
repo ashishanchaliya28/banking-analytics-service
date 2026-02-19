@@ -62,7 +62,7 @@ func (r *segmentRepo) Upsert(ctx context.Context, s *model.Segment) error {
 	_, err := r.col.UpdateOne(ctx,
 		bson.M{"user_id": s.UserID},
 		bson.M{"$set": s},
-		&mongo.UpdateOptions{Upsert: boolPtr(true)},
+		options.UpdateOne().SetUpsert(true),
 	)
 	return err
 }
@@ -97,5 +97,3 @@ func (r *crossSellRuleRepo) FindAll(ctx context.Context) ([]model.CrossSellRule,
 	cursor.All(ctx, &rules)
 	return rules, nil
 }
-
-func boolPtr(b bool) *bool { return &b }
